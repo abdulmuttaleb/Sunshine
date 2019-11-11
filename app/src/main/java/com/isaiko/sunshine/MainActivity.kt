@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.isaiko.sunshine;
+package com.isaiko.sunshine
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.widget.TextView
 
-public class MainActivity extends AppCompatActivity {
-    TextView mWeatherTextView;
+class MainActivity : AppCompatActivity() {
+    lateinit var mWeatherTextView: TextView
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forecast);
-        mWeatherTextView = findViewById(R.id.tv_weather_data);
-        String[] dummyWeatherData = {
-                "Today, May 17 - Clear - 17°C / 15°C",
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_forecast)
+        mWeatherTextView = findViewById(R.id.tv_weather_data)
+        val dummyWeatherData = arrayOf("Today, May 17 - Clear - 17°C / 15°C",
                 "Tomorrow - Cloudy - 19°C / 15°C",
                 "Thursday - Rainy- 30°C / 11°C",
                 "Friday - Thunderstorms - 21°C / 9°C",
@@ -41,10 +39,9 @@ public class MainActivity extends AppCompatActivity {
                 "Fri, May 27 - Hurricane - 21°C / 9°C",
                 "Sat, May 28 - Meteors - 16°C / 7°C",
                 "Sun, May 29 - Apocalypse - 16°C / 8°C",
-                "Mon, May 30 - Post Apocalypse - 15°C / 10°C",
-        };
-        for(String dummyWeatherDay:dummyWeatherData) {
-            mWeatherTextView.append(dummyWeatherDay+"\n\n\n");
+                "Mon, May 30 - Post Apocalypse - 15°C / 10°C")
+        for (dummyWeatherDay in dummyWeatherData) {
+            mWeatherTextView.append(dummyWeatherDay + "\n\n\n")
         }
     }
 }
