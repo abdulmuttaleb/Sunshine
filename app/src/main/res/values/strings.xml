@@ -126,6 +126,8 @@
     <string name="condition_unknown">Unknown (<xliff:g id="conditionId">%1$d</xliff:g>)</string>
 
     <string name="action_refresh">Refresh</string>
+    <string name="loading_failed">Error! Loading Failed</string>
+    
     <!-- - - - - - - - - - - -->
     <!-- Used by NetworkUtils-->
     <!-- - - - - - - - - - - -->
