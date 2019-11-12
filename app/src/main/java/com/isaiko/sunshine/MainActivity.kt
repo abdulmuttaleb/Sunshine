@@ -15,9 +15,21 @@
  */
 package com.isaiko.sunshine
 
+import android.content.Context
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
+import com.isaiko.sunshine.utilities.NetworkUtils
+import com.isaiko.sunshine.utilities.OpenWeatherJsonUtils
+import java.lang.Exception
+import com.isaiko.sunshine.data.SunshinePreferences
+import android.support.v4.app.SupportActivity
+import android.support.v4.app.SupportActivity.ExtraData
+import android.support.v4.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var mWeatherTextView: TextView
@@ -25,23 +37,45 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forecast)
+
         mWeatherTextView = findViewById(R.id.tv_weather_data)
-        val dummyWeatherData = arrayOf("Today, May 17 - Clear - 17°C / 15°C",
-                "Tomorrow - Cloudy - 19°C / 15°C",
-                "Thursday - Rainy- 30°C / 11°C",
-                "Friday - Thunderstorms - 21°C / 9°C",
-                "Saturday - Thunderstorms - 16°C / 7°C",
-                "Sunday - Rainy - 16°C / 8°C",
-                "Monday - Partly Cloudy - 15°C / 10°C",
-                "Tue, May 24 - Meatballs - 16°C / 18°C",
-                "Wed, May 25 - Cloudy - 19°C / 15°C",
-                "Thu, May 26 - Stormy - 30°C / 11°C",
-                "Fri, May 27 - Hurricane - 21°C / 9°C",
-                "Sat, May 28 - Meteors - 16°C / 7°C",
-                "Sun, May 29 - Apocalypse - 16°C / 8°C",
-                "Mon, May 30 - Post Apocalypse - 15°C / 10°C")
-        for (dummyWeatherDay in dummyWeatherData) {
-            mWeatherTextView.append(dummyWeatherDay + "\n\n\n")
+
+        loadWeatherData()
+    }
+
+    fun loadWeatherData(){
+        val location = SunshinePreferences.getPreferredWeatherLocation(this)
+        FetchWeatherAsyncTask().execute(location)
+    }
+
+    inner class FetchWeatherAsyncTask:AsyncTask<String, Void, ArrayList<String>?>(){
+
+        override fun doInBackground(vararg params: String?): ArrayList<String>? {
+            if(params.isEmpty()){
+                return null
+            }
+
+            val location = params[0]
+            val weatherUrl = NetworkUtils.buildUrl(location!!)
+
+            return try {
+                val jsonWeatherResponse = NetworkUtils.getResponseFromHttpUrl(weatherUrl!!)
+
+                val simpleJsonWeatherData = OpenWeatherJsonUtils.getSimpleWeatherStringsFromJson(this@MainActivity, jsonWeatherResponse!!)
+
+                simpleJsonWeatherData
+            }catch (e:Exception){
+                e.printStackTrace()
+                null
+            }
+        }
+
+        override fun onPostExecute(result: ArrayList<String>?) {
+            if(result!=null){
+                for(weather in result){
+                    mWeatherTextView.append((weather) + "\n\n\n");
+                }
+            }
         }
     }
 }

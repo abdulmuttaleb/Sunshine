@@ -17,6 +17,7 @@ package com.isaiko.sunshine.utilities
 
 import android.content.ContentValues
 import android.content.Context
+import android.util.Log
 
 import org.json.JSONArray
 import org.json.JSONException
@@ -45,7 +46,7 @@ object OpenWeatherJsonUtils {
      * @throws JSONException If JSON data cannot be properly parsed
      */
     @Throws(JSONException::class)
-    fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String): Array<String>? {
+    fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String): ArrayList<String>? {
 
         /* Weather information. Each day's forecast info is an element of the "list" array */
         val OWM_LIST = "list"
@@ -63,7 +64,7 @@ object OpenWeatherJsonUtils {
         val OWM_MESSAGE_CODE = "cod"
 
         /* String array to hold each day's weather String */
-        var parsedWeatherData: Array<String>? = null
+        var parsedWeatherData: ArrayList<String> = arrayListOf()
 
         val forecastJson = JSONObject(forecastJsonStr)
 
@@ -84,8 +85,6 @@ object OpenWeatherJsonUtils {
         }
 
         val weatherArray = forecastJson.getJSONArray(OWM_LIST)
-
-        parsedWeatherData = arrayOf()
 
         val localDate = System.currentTimeMillis()
         val utcDate = SunshineDateUtils.getUTCDateFromLocal(localDate)
@@ -129,10 +128,9 @@ object OpenWeatherJsonUtils {
             high = temperatureObject.getDouble(OWM_MAX)
             low = temperatureObject.getDouble(OWM_MIN)
             highAndLow = SunshineWeatherUtils.formatHighLows(context, high, low)
-
-            parsedWeatherData[i] = "$date - $description - $highAndLow"
+            Log.e("OpenWeatherJsonUtils", "$date $description $highAndLow " )
+            parsedWeatherData.add(i,"$date - $description - $highAndLow")
         }
-
         return parsedWeatherData
     }
 
