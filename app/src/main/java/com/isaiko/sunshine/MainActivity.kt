@@ -28,7 +28,9 @@ import android.support.v4.app.SupportActivity
 import android.support.v4.app.SupportActivity.ExtraData
 import android.support.v4.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -75,6 +77,24 @@ class MainActivity : AppCompatActivity() {
                 for(weather in result){
                     mWeatherTextView.append((weather) + "\n\n\n");
                 }
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.forecast,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item!!.itemId){
+            R.id.refresh ->{
+                Toast.makeText(this, "Refresh",Toast.LENGTH_SHORT).show()
+                loadWeatherData()
+                true
+            }
+            else ->{
+                super.onOptionsItemSelected(item)
             }
         }
     }
