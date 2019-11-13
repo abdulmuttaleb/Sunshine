@@ -11,6 +11,8 @@ import java.nio.file.WatchEvent
 
 class WeatherRecyclerAdapter() : RecyclerView.Adapter<WeatherRecyclerAdapter.WeatherViewHolder>(){
 
+    private lateinit var onWeatherClickListener: WeatherClickListener
+
     var weatherList:ArrayList<String> = arrayListOf()
     lateinit var context: Context
     constructor(context:Context, weatherList:ArrayList<String>):this(){
@@ -32,5 +34,18 @@ class WeatherRecyclerAdapter() : RecyclerView.Adapter<WeatherRecyclerAdapter.Wea
 
     inner class WeatherViewHolder(itemView:View): RecyclerView.ViewHolder(itemView){
         var weatherTextView: TextView = itemView.findViewById(R.id.tv_text)
+        init {
+            itemView.setOnClickListener {
+                onWeatherClickListener.onWeatherClick(weatherList[adapterPosition])
+            }
+        }
+    }
+
+    interface WeatherClickListener{
+        fun onWeatherClick(weather:String)
+    }
+
+    fun setOnWeatherClickListener(listener:WeatherClickListener){
+        this.onWeatherClickListener = listener
     }
 }

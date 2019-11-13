@@ -34,7 +34,7 @@ import com.isaiko.sunshine.R
 import com.isaiko.sunshine.adapter.WeatherRecyclerAdapter
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , WeatherRecyclerAdapter.WeatherClickListener{
     lateinit var errorTextView: TextView
     lateinit var progressBar: ProgressBar
 
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         weatherRecyclerView = findViewById(R.id.rv_weather)
 
         weatherRecyclerAdapter = WeatherRecyclerAdapter(this, weatherList)
+        weatherRecyclerAdapter.setOnWeatherClickListener(this)
         weatherRecyclerView.layoutManager = LinearLayoutManager(this)
         weatherRecyclerView.adapter = weatherRecyclerAdapter
 
@@ -92,8 +93,6 @@ class MainActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: ArrayList<String>?) {
             if(result!=null){
-                for(weather in result){
-                }
                 weatherList.clear()
                 weatherList.addAll(result)
                 weatherRecyclerAdapter.notifyDataSetChanged()
@@ -120,5 +119,9 @@ class MainActivity : AppCompatActivity() {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    override fun onWeatherClick(weather: String) {
+        Toast.makeText(this, weather, Toast.LENGTH_SHORT).show()
     }
 }
