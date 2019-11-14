@@ -15,6 +15,7 @@
  */
 package com.isaiko.sunshine.view
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -122,6 +123,7 @@ class MainActivity : AppCompatActivity() , WeatherRecyclerAdapter.WeatherClickLi
     }
 
     override fun onWeatherClick(weather: String) {
-        Toast.makeText(this, weather, Toast.LENGTH_SHORT).show()
+        val detailIntent = Intent(this, DetailActivity::class.java)
+        startActivity(detailIntent)
     }
 }
