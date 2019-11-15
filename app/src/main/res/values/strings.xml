@@ -127,7 +127,8 @@
 
     <string name="action_refresh">Refresh</string>
     <string name="loading_failed">Error! Loading Failed</string>
-    
+    <string name="share">Share</string>
+
     <!-- - - - - - - - - - - -->
     <!-- Used by NetworkUtils-->
     <!-- - - - - - - - - - - -->
