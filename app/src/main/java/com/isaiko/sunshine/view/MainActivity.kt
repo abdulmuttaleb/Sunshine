@@ -124,6 +124,7 @@ class MainActivity : AppCompatActivity() , WeatherRecyclerAdapter.WeatherClickLi
 
     override fun onWeatherClick(weather: String) {
         val detailIntent = Intent(this, DetailActivity::class.java)
+        detailIntent.putExtra("text",weather)
         startActivity(detailIntent)
     }
 }
